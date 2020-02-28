@@ -7,6 +7,20 @@
     <title>Document</title>
 </head>
 <body>
-    <p>this is a paragraph</p>
+    <p>Welcome to the chat app</p>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        //it means that we are making the request from client to the server 
+        var socket=io();
+
+        //to listen an event
+        socket.on('connect',()=>{
+            console.log('Connected to Server');
+        });
+
+        socket.on('disconnect',()=>{
+            console.log('Disconnected from  Server');
+        });
+    </script>
 </body>
 </html>
