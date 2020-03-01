@@ -25,11 +25,29 @@ app.use(express.static(publicPath));
 io.on('connection', (socket)=>{
     console.log('New user connected');
 
+    //here we are creating a new event 
+    socket.emit('newMessage',{
+        from:'John',
+        text:'See you then',
+        createdAt : 123123
+    })
+
+    //creating the custom event
+    // socket.on('createEmail',(newEmail) => {
+    //     console.log('createEmail', newEmail);
+
+    // });
+
+    //after writing this ...go and emit the call in index.js file
+    socket.on('createMessage',(message) => {
+        console.log('createMessage', message);
+    });
+
     //when the user leaves/disconnect the chat
     socket.on('disconnect',()=>{
         console.log('User was Disconnected');
     });
-})
+});
 
 
 server.listen(port,()=>{
