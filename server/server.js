@@ -26,11 +26,11 @@ io.on('connection', (socket)=>{
     console.log('New user connected');
 
     //here we are creating a new event 
-    socket.emit('newMessage',{
-        from:'John',
-        text:'See you then',
-        createdAt : 123123
-    })
+    // socket.emit('newMessage',{
+    //     from:'John',
+    //     text:'See you then',
+    //     createdAt : 123123
+    // })
 
     //creating the custom event
     // socket.on('createEmail',(newEmail) => {
@@ -41,6 +41,13 @@ io.on('connection', (socket)=>{
     //after writing this ...go and emit the call in index.js file
     socket.on('createMessage',(message) => {
         console.log('createMessage', message);
+
+        //io.emit will send message to all the user
+        io.emit('newMessage',{
+            from: message.from,
+            text:message.text,
+            createdAt : new Date().getTime()
+        });
     });
 
     //when the user leaves/disconnect the chat
@@ -48,7 +55,6 @@ io.on('connection', (socket)=>{
         console.log('User was Disconnected');
     });
 });
-
 
 server.listen(port,()=>{
     console.log(`Server is up on ${port}`)
