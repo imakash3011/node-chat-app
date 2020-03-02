@@ -10,6 +10,9 @@ const http =require('http');
 const express =require('express');
 const socketIO= require('socket.io')
 
+//getting access to generate message
+const {generateMessage} = require('./utils/message')
+
 
 const publicPath =path.join(__dirname, '../public')
 // console.log(publicPath);
@@ -38,16 +41,29 @@ io.on('connection', (socket)=>{
 
     // });
 
+    //socket.emit from Admin text welcome to the chat app
+    socket.emit('newMessage',generateMessage('Admin','Welcome to the chat app'));
+
+
+    // socket.broadcast.emit from Admin text new user joined
+    socket.broadcast.emit('newMessage',generateMessage('Admin','New User Joined'));
+
+
+
     //after writing this ...go and emit the call in index.js file
     socket.on('createMessage',(message) => {
         console.log('createMessage', message);
 
         //io.emit will send message to all the user
-        io.emit('newMessage',{
-            from: message.from,
-            text:message.text,
-            createdAt : new Date().getTime()
-        });
+        io.emit('newMessage',generateMessage(message.from , message.text));
+
+
+        //except sender everyone else will see the message
+        // socket.broadcast.emit('newMessage',{
+        //     from: message.from,
+        //     text:message.text,
+        //     createdAt : new Date().getTime()
+        // });
     });
 
     //when the user leaves/disconnect the chat
