@@ -21,3 +21,11 @@
         socket.on('newMessage',function (message) {
             console.log('NewMessage',message);
         });
+
+        //adding an acknowledgement
+        socket.emit('createMessage',{
+            from: 'Frank',
+            text: 'Hi'
+        },function(data){
+            console.log('Got it',data)
+        })

@@ -51,11 +51,14 @@ io.on('connection', (socket)=>{
 
 
     //after writing this ...go and emit the call in index.js file
-    socket.on('createMessage',(message) => {
+    //callback is being used to generate the acknowledgement
+    socket.on('createMessage',(message , callback) => {
         console.log('createMessage', message);
 
         //io.emit will send message to all the user
         io.emit('newMessage',generateMessage(message.from , message.text));
+        //we can also pass multiple argument inside the callback
+        callback('This is from the server');
 
 
         //except sender everyone else will see the message
