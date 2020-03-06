@@ -11,7 +11,7 @@ const express =require('express');
 const socketIO= require('socket.io')
 
 //getting access to generate message
-const {generateMessage} = require('./utils/message')
+const {generateMessage,generateLocationMessage} = require('./utils/message')
 
 
 const publicPath =path.join(__dirname, '../public')
@@ -70,7 +70,7 @@ io.on('connection', (socket)=>{
     });
 
     socket.on('createLocationMessage',(coords)=>{
-        io.emit('newMessage',generateMessage('Admin',`${coords.latitude},${coords.longitude}`))
+        io.emit('newLocationMessage',generateLocationMessage('Admin',coords.latitude ,coords.longitude));
     })
 
     //when the user leaves/disconnect the chat

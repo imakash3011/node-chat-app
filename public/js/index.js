@@ -12,6 +12,7 @@
             // });
         });
 
+        //socket.on is used to listen
         socket.on('disconnect',function () {
             console.log('Disconnected from  Server');
         });
@@ -27,6 +28,20 @@
             li.text(`${message.from}:${message.text}`);
 
             jQuery('#messages').append(li); 
+        });
+
+        socket.on('newLocationMessage',function(message){
+            var li = jQuery('<li></li>')
+            //here we are creating an anchor tag or say link for geolocation
+            //target="_blank" will open the anchor tag in new tab not in  the same
+            var a = jQuery('<a target="_blank"> My Current Location </a>')
+
+            //sender name
+            li.text(`${message.from}: `);
+            //updating anchor tag...(read about attr)
+            a.attr('href', message.url);
+            li.append(a);
+            jQuery('#messages').append(li);
         });
 
         //adding an acknowledgement
