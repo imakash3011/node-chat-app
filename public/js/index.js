@@ -50,3 +50,24 @@
 
             });
         });
+
+        //Adding the Geolocation property in chat app
+        var locationButton =jQuery('#send-location');
+        locationButton.on('click', function(){
+            //firstly cheacking the access of geolocation API
+            if(!navigator.geolocation){
+                return alert('Geolocation not supported by your browser.')
+            }
+
+            //if geolocation work then perform the following function
+            navigator.geolocation.getCurrentPosition(function (position){
+                // console.log(position);
+                socket.emit('createLocationMessage',{
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                });
+
+            },function(){
+                alert('Unable to fetch location.')
+            }); 
+        });

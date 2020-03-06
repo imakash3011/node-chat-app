@@ -69,6 +69,10 @@ io.on('connection', (socket)=>{
         // });
     });
 
+    socket.on('createLocationMessage',(coords)=>{
+        io.emit('newMessage',generateMessage('Admin',`${coords.latitude},${coords.longitude}`))
+    })
+
     //when the user leaves/disconnect the chat
     socket.on('disconnect',()=>{
         console.log('User was Disconnected');
