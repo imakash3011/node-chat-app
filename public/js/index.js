@@ -56,13 +56,17 @@
             //by default the page gets freshed...now we will prevent such thing
             e.preventDefault();
 
+            var messageTextbox = jQuery('[name=message]');
+
             //we are overwriting the default behaviour so we have to emit the following msg
 
             socket.emit('createMessage',{
                 from: 'User',
-                text: jQuery('[name=message]').val()
+                text: messageTextbox.val()
             },function(){
-
+                //clearing the text once it is send successfully
+                //setting val('') empty ..which means after sendinf msg it will be empty
+                messageTextbox.val('')
             });
         });
 
@@ -74,15 +78,22 @@
                 return alert('Geolocation not supported by your browser.')
             }
 
+            //disabling the location button if not supported in browser or already sending the location
+            locationButton.attr('disabled','disabled').text('Sending location...');
+
             //if geolocation work then perform the following function
             navigator.geolocation.getCurrentPosition(function (position){
                 // console.log(position);
+                //now again we are enabling the location button that we disabled in above code
+                //we will write this code in both the part i.e success and the error
+                locationButton.removeAttr('disabled').text('Send location');
                 socket.emit('createLocationMessage',{
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
                 });
 
             },function(){
+                locationButton.removeAttr('disabled').text('Send location');
                 alert('Unable to fetch location.')
             }); 
         });

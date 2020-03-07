@@ -58,7 +58,7 @@ io.on('connection', (socket)=>{
         //io.emit will send message to all the user
         io.emit('newMessage',generateMessage(message.from , message.text));
         //we can also pass multiple argument inside the callback
-        callback('This is from the server');
+        callback();
 
 
         //except sender everyone else will see the message
