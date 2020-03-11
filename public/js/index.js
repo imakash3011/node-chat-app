@@ -20,30 +20,48 @@
         //listen to new event
         //it will be emitted by the server and will be listen by the client
         socket.on('newMessage',function (message) {
-            // console.log('NewMessage',message);
             var formattedTime =moment(message.createdAt).format('h:mm a');
+            //implementing mustache.js rendering method
+            var template =jQuery('#message-template').html();
+            var html =Mustache.render(template,{
+                text:message.text,
+                from:message.from,
+                createdAt:formattedTime
+            });
+
+            jQuery('#messages').append(html);
+            // console.log('NewMessage',message);
+            
 
             //appending the messages in li
-            var li =jQuery('<li></li>');
+            // var li =jQuery('<li></li>');
             //template string
-            li.text(`${message.from} ${formattedTime}:${message.text}`);
+            // li.text(`${message.from} ${formattedTime}:${message.text}`);
 
-            jQuery('#messages').append(li); 
+            // jQuery('#messages').append(li); 
         });
 
         socket.on('newLocationMessage',function(message){
             var formattedTime =moment(message.createdAt).format('h:mm a');
-            var li = jQuery('<li></li>')
+            var template =jQuery('#location-message-template').html();
+            var html =Mustache.render(template,{
+                from:message.from,
+                url:message.url,
+                createdAt:formattedTime
+            });
+            jQuery('#messages').append(html);
+            
+            // var li = jQuery('<li></li>')
             //here we are creating an anchor tag or say link for geolocation
             //target="_blank" will open the anchor tag in new tab not in  the same
-            var a = jQuery('<a target="_blank"> My Current Location </a>')
+            // var a = jQuery('<a target="_blank"> My Current Location </a>')
 
             //sender name
-            li.text(`${message.from} ${formattedTime}: `);
+            // li.text(`${message.from} ${formattedTime}: `);
             //updating anchor tag...(read about attr)
-            a.attr('href', message.url);
-            li.append(a);
-            jQuery('#messages').append(li);
+            // a.attr('href', message.url);
+            // li.append(a);
+            // jQuery('#messages').append(li);
         });
 
         //adding an acknowledgement
