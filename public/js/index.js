@@ -1,6 +1,25 @@
         //it means that we are making the request from client to the server 
         var socket=io();
 
+        //autoscrolling on receiving msg
+        function scrollToBottom(){
+            //selectors
+            var messages =jQuery('#messages');
+            var newMessage = messages.children('li:last-child');
+            //height
+            var clientHeight =messages.prop('clientHeight');
+            var scrollTop =messages.prop('scrollTop');
+            var scrollHeight =messages.prop('scrollHeight');
+            var newMessageHeight = newMessage.innerHeight();
+            var lastMessageHeight = newMessage.prev().innerHeight();
+
+            if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight){
+                // console.log('should scroll');
+                messages.scrollTop(scrollHeight);
+            }
+
+        }
+
         //to listen an event
         //we have removed arrow function because it will crash in the mobile phones if opened
         socket.on('connect',function () {
@@ -30,6 +49,8 @@
             });
 
             jQuery('#messages').append(html);
+            //scroll the msg box to bottom on receiving the msg
+            scrollToBottom();
             // console.log('NewMessage',message);
             
 
@@ -50,6 +71,8 @@
                 createdAt:formattedTime
             });
             jQuery('#messages').append(html);
+            //scroll the msg box to bottom on receiving the msg
+            scrollToBottom();
             
             // var li = jQuery('<li></li>')
             //here we are creating an anchor tag or say link for geolocation
