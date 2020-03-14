@@ -13,7 +13,7 @@ const socketIO= require('socket.io')
 //getting access to generate message
 const {generateMessage,generateLocationMessage} = require('./utils/message')
 
-
+const {isRealString} = require('./utils/validation');
 const publicPath =path.join(__dirname, '../public')
 // console.log(publicPath);
 const port = process.env.PORT || 3000;
@@ -48,7 +48,12 @@ io.on('connection', (socket)=>{
     // socket.broadcast.emit from Admin text new user joined
     socket.broadcast.emit('newMessage',generateMessage('Admin','New User Joined'));
 
-
+    socket.on('join',(params,callback)=>{
+        if (!isRealString(params.name) || !isRealString(params.room)){
+            callback('Name and room name are required. ');
+        }
+        callback();
+    });
 
     //after writing this ...go and emit the call in index.js file
     //callback is being used to generate the acknowledgement

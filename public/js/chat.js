@@ -23,8 +23,19 @@
         //to listen an event
         //we have removed arrow function because it will crash in the mobile phones if opened
         socket.on('connect',function () {
-            console.log('Connected to Server');
+            // console.log('Connected to Server');
+            //deparam in the same way as we do in the console to get the result in a formatted way 
+            var params = jQuery.deparam(window.location.search)
 
+            socket.emit('join',params,function(err){
+                if(err){
+                    alert(err);
+                    window.location.href = '/';
+                }else{
+                    console.log('No error')
+                }
+
+            });
             // socket.emit('createMessage',{
             //     from:'Andrew',
             //     text:'Yup , that works for me.'
@@ -140,3 +151,11 @@
                 alert('Unable to fetch location.')
             }); 
         });
+
+
+
+        //note
+        //include the library links.mead.io/deparam
+        //it helps to in search query
+        //param take the object and return string
+        //deparam take the string and return object
