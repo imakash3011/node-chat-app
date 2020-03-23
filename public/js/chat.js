@@ -47,6 +47,20 @@
             console.log('Disconnected from  Server');
         });
 
+        //we are updating the users list each time the new user get connected
+        socket.on('updateUserList',function (users) {
+            // console.log('Users list',users);
+
+            var ol = jQuery('<ol></ol>');
+
+            users.forEach(function (user){
+                ol.append(jQuery('<li></li>').text(user));
+            });
+
+            jQuery('#users').html(ol);
+        });
+
+
         //listen to new event
         //it will be emitted by the server and will be listen by the client
         socket.on('newMessage',function (message) {
@@ -115,7 +129,7 @@
             //we are overwriting the default behaviour so we have to emit the following msg
 
             socket.emit('createMessage',{
-                from: 'User',
+                // from: 'User',
                 text: messageTextbox.val()
             },function(){
                 //clearing the text once it is send successfully
